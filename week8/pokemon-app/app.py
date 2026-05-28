@@ -196,10 +196,10 @@ with gr.Blocks(title="Pokemon Classifier – Model Comparison") as demo:
 
     gr.Examples(
         examples=[
-            ["example_images/charizard.png"],
-            ["example_images/charmander.png"],
-            ["example_images/eevee.png"],
-            ["example_images/ditto.png"],
+            ["charizard.png"],
+            ["charmander.png"],
+            ["eevee.png"],
+            ["ditto.png"],
         ],
         inputs=image_input,
         label="Example Images",
