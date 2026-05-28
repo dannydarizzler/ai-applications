@@ -176,13 +176,13 @@ with gr.Blocks(title="Pokemon Classifier – Model Comparison") as demo:
     with gr.Row():
         with gr.Column():
             gr.Markdown("### Custom ViT (Transfer Learning)")
-            vit_output = gr.Label(label="Custom ViT Predictions", num_top_classes=6)
+            vit_output = gr.JSON(label="Custom ViT Predictions")
         with gr.Column():
             gr.Markdown("### CLIP (Open-Source Zero-Shot)")
-            clip_output = gr.Label(label="CLIP Predictions", num_top_classes=6)
+            clip_output = gr.JSON(label="CLIP Predictions")
         with gr.Column():
             gr.Markdown("### GPT-4o (Closed-Source)")
-            openai_output = gr.Label(label="OpenAI GPT-4o Predictions", num_top_classes=6)
+            openai_output = gr.JSON(label="OpenAI GPT-4o Predictions")
 
     classify_btn.click(
         fn=classify_all,
