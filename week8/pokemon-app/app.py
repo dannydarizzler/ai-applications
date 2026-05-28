@@ -42,7 +42,8 @@ clip_classifier = pipeline(
     model="openai/clip-vit-large-patch14",
 )
 
-openai_client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY", ""))
+_api_key = os.environ.get("OPENAI_API_KEY", "")
+openai_client = OpenAI(api_key=_api_key) if _api_key else None
 
 # ---------------------------------------------------------------------------
 # Helper: PIL image → base64 string for OpenAI
@@ -69,7 +70,7 @@ def classify_with_clip(image: Image.Image) -> dict:
 
 
 def classify_with_openai(image: Image.Image) -> dict:
-    if not openai_client.api_key:
+    if not openai_client:
         return {"error": "OPENAI_API_KEY not set"}
 
     b64 = pil_to_base64(image)
