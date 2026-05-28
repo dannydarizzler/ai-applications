@@ -1,2 +1,7 @@
 disposition.md
 week1/data_with_large_residuals.csv
+
+# Large model files (too big for GitHub – use HuggingFace Hub instead)
+*.safetensors
+*.pt
+*.bin
