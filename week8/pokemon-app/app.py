@@ -42,8 +42,12 @@ clip_classifier = pipeline(
     model="openai/clip-vit-large-patch14",
 )
 
+import os
 _api_key = os.environ.get("OPENAI_API_KEY", "")
-openai_client = OpenAI(api_key=_api_key) if _api_key else None
+try:
+    openai_client = OpenAI(api_key=_api_key) if _api_key else None
+except Exception:
+    openai_client = None
 
 # ---------------------------------------------------------------------------
 # Helper: PIL image → base64 string for OpenAI
@@ -124,12 +128,25 @@ def classify_all(image):
         return {}, {}, {}
     try:
         pil_img = Image.fromarray(image) if not isinstance(image, Image.Image) else image
-        vit_out = classify_with_vit(pil_img)
-        clip_out = classify_with_clip(pil_img)
-        openai_out = classify_with_openai(pil_img)
-        return vit_out, clip_out, openai_out
     except Exception as e:
-        return {"error": str(e)}, {}, {}
+        return {"error": f"Image error: {e}"}, {}, {}
+
+    try:
+        vit_out = classify_with_vit(pil_img)
+    except Exception as e:
+        vit_out = {"error": f"ViT error: {str(e)}"}
+
+    try:
+        clip_out = classify_with_clip(pil_img)
+    except Exception as e:
+        clip_out = {"error": f"CLIP error: {str(e)}"}
+
+    try:
+        openai_out = classify_with_openai(pil_img)
+    except Exception as e:
+        openai_out = {"error": f"OpenAI error: {str(e)}"}
+
+    return vit_out, clip_out, openai_out
 
 
 with gr.Blocks(title="Pokemon Classifier – Model Comparison") as demo:
